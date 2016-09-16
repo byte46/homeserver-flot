@@ -3,4 +3,7 @@ bin/
 include/
 lib/
 local/
+share/
 pip-selfcheck.json
+*.json
+*.rrd
