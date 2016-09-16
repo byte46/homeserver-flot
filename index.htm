@@ -56,17 +56,25 @@
             },
 			xaxis: {
                 mode: "time",
-                timezone: "browser",
-			}
+                timezone: "browser"
+			},
+            zoom: {
+                interactive: true
+            },
+            pan: {
+                interactive: true
+            }
+
 		};
 
 		function onDataReceived(series) {
-			data = [ series ];
+			//data = [ series ];
+            data = series;
 			$.plot("#placeholder", data, options);
 		}
 
 		$.ajax({
-			url: "/pressure.json",
+			url: "/temp.json",
 			type: "GET",
 			dataType: "json",
 			success: onDataReceived
