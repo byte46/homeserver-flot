@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*
 import json
 import subprocess
+FILENAME = "temperature.rrd"
+TIMERANGE = "-48h"
 
 data = []
 labels = {
@@ -12,7 +14,7 @@ labels = {
         "balcony_temp_temp": ("Балкон", "#3F0290")
         }
 
-poutput = subprocess.Popen('export LC_NUMERIC="C.UTF-8";rrdtool fetch temperature.rrd -s-24h AVERAGE', shell=True, stdout=subprocess.PIPE)
+poutput = subprocess.Popen('export LC_NUMERIC="C.UTF-8";rrdtool fetch temperature.rrd -s-48h AVERAGE', shell=True, stdout=subprocess.PIPE)
 for line in poutput.stdout:
     if line.strip() and ':' not in line:
         z = [x for x in line.rstrip().split(' ') if x]

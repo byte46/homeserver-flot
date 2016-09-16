@@ -51,13 +51,16 @@ $(function() {
             mode: "time",
             timezone: "browser",
             ticks: 40,
-            minTickSize: [1, "hour"]
+            minTickSize: [1, "hour"],
+            min: new Date().getTime()-60*60*24*1000,
+            panRange: [new Date().getTime()-60*60*48*1000, new Date().getTime()]
 		},
         yaxis: {
-            label: "Градусы цельсия"
+            label: "Градусы цельсия",
+            panRange: false
         },
         zoom: {
-            interactive: true
+            interactive: false
         },
         pan: {
             interactive: true
