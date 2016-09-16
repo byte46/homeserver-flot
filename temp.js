@@ -1,5 +1,8 @@
 $(function() {
 
+    var data;
+    var choiceContainer;
+
     String.prototype.lpad = function(padString, length) {
         var str = this;
         while (str.length < length)
@@ -70,8 +73,7 @@ $(function() {
                 radius: 2
             }
         },
-        legend:
-        {
+        legend: {
             show: true,
             position: "se",
             container: "#legend",
@@ -83,6 +85,17 @@ $(function() {
 	function onDataReceived(series) {
 		//data = [ series ];
         data = series;
+        // Рисуем чекбоксы
+        choiceContainer = $("#choices");
+            $.each(data, function(key, val) {
+                choiceContainer.append("<br/><input type='checkbox' name='" + key +
+                    "' checked='checked' id='id" + key + "'></input>" +
+                    "<label for='id" + key + "'>"
+                    + val.label + "</label>");
+            });
+        // Конец отрисовки
+        choiceContainer.find("input").click(rePlot);
+        
 		$.plot("#placeholder", data, options);
 	}
 
@@ -92,4 +105,19 @@ $(function() {
 		dataType: "json",
 		success: onDataReceived
 	});
+    
+    function rePlot()
+    {
+            dataset = []
+			choiceContainer.find("input:checked").each(function () {
+				var key = $(this).attr("name");
+				if (key && data[key]) {
+					dataset.push(data[key]);
+				}
+			});
+
+			if (data.length > 0) {
+				$.plot("#placeholder", dataset,options);
+            }
+    }
 });
