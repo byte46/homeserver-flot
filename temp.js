@@ -1,7 +1,8 @@
 $(function() {
 
-    var data;
-    var choiceContainer;
+    var graph = "#temp_placeholder";
+    var legend = "#temp_legend";
+    var choices = "#temp_choices";
 
     String.prototype.lpad = function(padString, length) {
         var str = this;
@@ -19,7 +20,7 @@ $(function() {
 		opacity: 0.80
 	}).appendTo("body");
 
-    $("#placeholder").bind("plothover", function (event, pos, item) {
+    $(graph).bind("plothover", function (event, pos, item) {
 
 		var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 		$("#hoverdata").text(str);
@@ -74,17 +75,16 @@ $(function() {
         legend: {
             show: true,
             position: "se",
-            container: "#legend",
+            container: legend,
             noColumns: 3
         }
 
 	};
 
 	function onDataReceived(series) {
-		//data = [ series ];
         data = series;
         // Рисуем чекбоксы
-        choiceContainer = $("#choices");
+        choiceContainer = $(choices);
             $.each(data, function(key, val) {
                 choiceContainer.append("<br/><input type='checkbox' name='" + key +
                     "' checked='checked' id='id" + key + "'></input>" +
@@ -93,12 +93,11 @@ $(function() {
             });
         // Конец отрисовки
         choiceContainer.find("input").click(rePlot);
-        
-		$.plot("#placeholder", data, options);
+		$.plot(graph, data, options);
 	}
 
 	$.ajax({
-		url: "/temp.json",
+		url: "/temperature.json",
 		type: "GET",
 		dataType: "json",
 		success: onDataReceived
@@ -106,16 +105,16 @@ $(function() {
     
     function rePlot()
     {
-            dataset = []
-			choiceContainer.find("input:checked").each(function () {
-				var key = $(this).attr("name");
-				if (key && data[key]) {
-					dataset.push(data[key]);
-				}
-			});
+        dataset = []
+		choiceContainer.find("input:checked").each(function () {
+			var key = $(this).attr("name");
+			if (key && data[key]) {
+				dataset.push(data[key]);
+			}
+		});
 
-			if (data.length > 0) {
-				$.plot("#placeholder", dataset,options);
-            }
+		if (data.length > 0) {
+			$.plot(graph, dataset,options);
+        }
     }
 });
