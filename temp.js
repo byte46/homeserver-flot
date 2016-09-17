@@ -40,12 +40,6 @@ $(function() {
 });
 
 	var options = {
-		lines: {
-			show: true
-		},
-		points: {
-			show: false
-		},
         grid: {
             hoverable: true,
             backgroundColor: "#FFE5B3"
@@ -70,7 +64,11 @@ $(function() {
         },
         series: {
             points: {
-                radius: 2
+                radius: 2,
+                show: false
+            },
+            lines: {
+                show: true
             }
         },
         legend: {
