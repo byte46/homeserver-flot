@@ -1,44 +1,81 @@
 <HTML>
 <HEAD>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/style.css" rel="stylesheet" type="text/css">
     <script type='text/javascript' src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type='text/javascript' src="bower_components/flot/jquery.flot.js"></script>
     <script type='text/javascript' src="bower_components/flot/jquery.flot.time.js"></script>
     <script type='text/javascript' src="bower_components/flot/jquery.flot.navigate.js"></script>
     <script type='text/javascript' src='/temp.js'></script>
-    <TITLE>Flot test page</TITLE>
-</HEAD>
-<body>
-    <div id="temp_graph">
-        <div id="temp_placeholder" style="width:1000px;height:400px; float:left"></div>
-        <div id="temp_choices" style="float:right;width: 150px"></div>
-        <div id="temp_legend" style="clear:both">
-    </div>
-    </br>
-    <div id="hum_graph">
-        <div id="hum_placeholder" style="width:1000px;height:400px; float:left"></div>
-        <div id="hum_choices" style="float:right;width: 150px"></div>
-        <div id="hum_legend" style="clear:both">
-    </div>
-    </br>
-    <div id="brg_graph">
-        <div id="brg_placeholder" style="width:1000px;height:400px; float:left"></div>
-        <div id="brg_choices" style="float:right;width: 150px"></div>
-        <div id="brg_legend" style="clear:both">
-    </div>
-    </br>
-    <div id="pre_graph">
-        <div id="pre_placeholder" style="width:1000px;height:400px; float:left"></div>
-        <div id="pre_choices" style="float:right;width: 150px"></div>
-        <div id="pre_legend" style="clear:both">
-    </div>
-    </br>
-    <div id="lightnings_graph">
-        <div id="lightnings_placeholder" style="width:1000px;height:400px; float:left"></div>
-        <div id="lightnings_choices" style="float:right;width: 150px"></div>
-        <div id="lightnings_legend" style="clear:both">
-    </div>
-    </br>
-    </br>
+    <script>
+        function startTime() {
+            var today=new Date();
+            var h=today.getHours();
+            var m=today.getMinutes();
+            m = checkTime(m);
+            h = checkTime(h);
+            document.getElementById('timetxt').innerHTML = h+":"+m; // +":"+s;
+            setTimeout(function(){startTime()},10000);
+        }
+        function checkTime(i) {
+            if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+</head>
+
+<body onload="startTime()">
+    <center>
+        UUWW 201830Z 03002MPS 9999 BKN037 09/08 Q1011 R06/290050 TEMPO BKN003
+        <font color="black">
+            <table class="vals">
+                <tr>
+                    <td> </td>
+                    <td class="room">комната:</td>
+                    <td class="kitchen">кухня:</td>
+                    <td class="bathroom">ванная:</td>
+                    <td class="out">улица:</td>
+                </tr>
+                <tr class="last">
+                    <td align="center" id="timetxt"> </td>
+                    <td class="room">21.00</td>
+                    <td class="kitchen">22.00</td>
+                    <td class="bathroom">23.00</td>
+                    <td class="out">25.00</td>
+                </tr>
+            </table>
+            </font>    
+
+<div id="temp_graph">
+    <div id="temp_placeholder" class="g_placeholder"></div>
+    <div id="temp_choices" style="float:right;width: 200px"></div>
+    <div id="temp_legend" style="clear:both">
+</div>
+</br>
+<div id="hum_graph">
+    <div id="hum_placeholder" class="g_placeholder"></div>
+    <div id="hum_choices" style="float:right;width: 200px"></div>
+    <div id="hum_legend" style="clear:both">
+</div>
+</br>
+<div id="brg_graph">
+    <div id="brg_placeholder" class="g_placeholder"></div>
+    <div id="brg_choices" style="float:right;width: 200px"></div>
+    <div id="brg_legend" style="clear:both">
+</div>
+</br>
+<div id="pre_graph">
+    <div id="pre_placeholder" class="g_placeholder"></div>
+    <div id="pre_choices" style="float:right;width: 200px"></div>
+    <div id="pre_legend" style="clear:both">
+</div>
+</br>
+<div id="lightnings_graph">
+    <div id="lightnings_placeholder" class="g_placeholder"></div>
+    <div id="lightnings_choices" style="float:right;width: 200px"></div>
+    <div id="lightnings_legend" style="clear:both">
+</div>
+</br>
+</br>
 
 </body></HTML>

@@ -1,8 +1,11 @@
-$(function() {
-
-    var graph = "#temp_placeholder";
-    var legend = "#temp_legend";
-    var choices = "#temp_choices";
+function drawTemperature(prefix, units, url) {
+    var graph = "#"+prefix+"_placeholder";
+    var legend = "#"+prefix+"_legend";
+    var choices = "#"+prefix+"_choices";
+    var data_url = url;
+    var data = [];
+    var dataset = [];
+    var choiceContainer;
 
     String.prototype.lpad = function(padString, length) {
         var str = this;
@@ -32,7 +35,7 @@ $(function() {
             hrs = x.getHours().toString();
             mins = x.getMinutes().toString();
             ttime = hrs.lpad("0",2) + ":" + mins.lpad("0", 2);
-			$("#tooltip").html(item.series.label + "," + ttime + " = " + y +"°C")
+			$("#tooltip").html(item.series.label + "," + ttime + " = " + y + units)
 				.css({top: item.pageY+5, left: item.pageX+5})
 				.fadeIn(200);
 		} else {
@@ -84,7 +87,9 @@ $(function() {
 	function onDataReceived(series) {
         data = series;
         // Рисуем чекбоксы
+        /*
         choiceContainer = $(choices);
+        choiceContainer.html("");
             $.each(data, function(key, val) {
                 choiceContainer.append("<br/><input type='checkbox' name='" + key +
                     "' checked='checked' id='id" + key + "'></input>" +
@@ -93,16 +98,17 @@ $(function() {
             });
         // Конец отрисовки
         choiceContainer.find("input").click(rePlot);
+        */
 		$.plot(graph, data, options);
 	}
 
 	$.ajax({
-		url: "/temperature.json",
+		url: data_url,
 		type: "GET",
 		dataType: "json",
 		success: onDataReceived
 	});
-    
+    /*
     function rePlot()
     {
         dataset = []
@@ -117,4 +123,13 @@ $(function() {
 			$.plot(graph, dataset,options);
         }
     }
+    */
+}
+
+$(function(){
+    drawTemperature("hum", "%","/misc.json");
+    drawTemperature("temp", "&deg;C", "/temperature.json");
+    drawTemperature("pre", " мм. рт. ст.","/pressure.json");
+    drawTemperature("brg", " ХЗ","/brightness.json");
+    drawTemperature("lightnings", " разр.","/lightnings.json");
 });
