@@ -1,4 +1,4 @@
-function drawTemperature(prefix, units, url) {
+function drawGraph(prefix, units, url) {
     var graph = "#"+prefix+"_placeholder";
     var legend = "#"+prefix+"_legend";
     var choices = "#"+prefix+"_choices";
@@ -127,9 +127,9 @@ function drawTemperature(prefix, units, url) {
 }
 
 $(function(){
-    drawTemperature("hum", "%","/misc.json");
-    drawTemperature("temp", "&deg;C", "/temperature.json");
-    drawTemperature("pre", " мм. рт. ст.","/pressure.json");
-    drawTemperature("brg", " ХЗ","/brightness.json");
-    drawTemperature("lightnings", " разр.","/lightnings.json");
+    drawGraph("temp", "&deg;C", "/temperature.json");
+    drawGraph("hum", "%","/misc.json");
+    drawGraph("pre", " мм. рт. ст.","/pressure.json");
+    drawGraph("brg", " ХЗ","/brightness.json");
+    drawGraph("lightnings", " разр.","/lightnings.json");
 });

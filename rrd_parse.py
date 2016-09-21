@@ -14,7 +14,7 @@ LABELS = {
     "radiator_temp": ("Батарея", "#909090"),
     "balcony_temp": ("Балкон", "#3F0290"),
     "pressure": ("Давление", "#2020FF"),
-    "room_brightness": ("Освещённость в комнате", "#E4FF4E"),
+    "room_brightness": ("Освещённость в комнате", "#FF6F4E"),
     "room_humidity": ("Влажность в комнате", "#2020FF"),
     "out_humidity": ("Влажность на улице", "#FF2020"),
     "l_current": ("Разряды молний", "#FF2020")
