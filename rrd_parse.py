@@ -5,6 +5,8 @@ import getopt
 import json
 import subprocess
 
+DEBUG_PORT = 8000
+
 RRDTOOL = "/usr/bin/rrdtool"
 TIMERANGE = "-48h"
 
@@ -70,6 +72,9 @@ def parse_rrd_file(input_filename, output_filename=None, exclude=None):
     except:
         sys.stderr.write("File write error.\r\n")
 
+def application(environ, start_response):
+    start_response("200 OK", [("Content-Type", "text/html")])
+    return("Server is running OK.")
 
 def main(argv):
     input_filename = ''
@@ -82,7 +87,7 @@ Example:
     try:
         if len(argv) == 0:
             raise getopt.GetoptError("Err")
-        opts, args = getopt.getopt(argv, "hi:o:e:", ["ifile=", "ofile=", "exclude="])
+        opts, args = getopt.getopt(argv, "hi:o:e:d", ["ifile=", "ofile=", "exclude="])
     except getopt.GetoptError:
         sys.stderr.write(help_str)
         sys.exit(2)
@@ -96,6 +101,15 @@ Example:
             output_filename = arg
         elif opt in ("-e", "--exclude"):
             exclude = arg
+        elif opt == "-d":
+            sys.stderr.write(
+                "Daemon mode enabled. Port: {port}\r\n".format(
+                    port=DEBUG_PORT
+                )
+            )
+            from wsgiref.simple_server import make_server
+            httpd = make_server('', DEBUG_PORT, application)
+            httpd.serve_forever()
     if exclude:
         exclude = [int(x) for x in exclude.split(',')]
     if input_filename:
