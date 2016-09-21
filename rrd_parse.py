@@ -6,7 +6,7 @@ import json
 import subprocess
 from cgi import parse_qs
 
-DEBUG_PORT = 8001
+DEBUG_PORT = 8000
 
 RRDTOOL = "/usr/bin/rrdtool"
 TIMERANGE = "-48h"
