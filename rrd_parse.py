@@ -4,8 +4,9 @@ import sys
 import getopt
 import json
 import subprocess
+from cgi import parse_qs
 
-DEBUG_PORT = 8000
+DEBUG_PORT = 8001
 
 RRDTOOL = "/usr/bin/rrdtool"
 TIMERANGE = "-48h"
@@ -24,8 +25,10 @@ LABELS = {
     "l_current": ("Разряды молний", "#FF2020")
 }
 
+pslash = lambda x: x if x.endswith('/') else x + '/'
 
-def parse_rrd_file(input_filename, output_filename=None, exclude=None):
+
+def parse_rrd_file(input_filename, output_filename=None, exclude=None, wsgi=False):
     data = []
     cmd_s = 'LC_NUMERIC="C" {rrdtool} fetch {filename} -s{timerange} AVERAGE'
     poutput = subprocess.Popen(
@@ -62,19 +65,40 @@ def parse_rrd_file(input_filename, output_filename=None, exclude=None):
             pdata.append(v)
     data = pdata
     del(pdata)
-    if not output_filename:
-        fname, ext = os.path.splitext(input_filename)
-        output_filename = fname + ".json"
-    try:
-        fd = open(output_filename, "wb")
-        fd.write(json.dumps(data))
-        fd.close()
-    except:
-        sys.stderr.write("File write error.\r\n")
+    if not wsgi:
+        if not output_filename:
+            fname, ext = os.path.splitext(input_filename)
+            output_filename = fname + ".json"
+        try:
+            fd = open(output_filename, "wb")
+            fd.write(json.dumps(data))
+            fd.close()
+        except:
+            sys.stderr.write("File write error.\r\n")
+    else:
+        return data
+
 
 def application(environ, start_response):
-    start_response("200 OK", [("Content-Type", "text/html")])
-    return("Server is running OK.")
+    path = pslash(environ['PATH_INFO'])
+    #ip = environ['REMOTE_ADDR']
+    if path == "/rrd/":
+        start_response("200 OK", [("Content-Type", "application/json")])
+        return json.dumps(parse_query(environ['QUERY_STRING']))
+    start_response("200 OK", [("Content-Type", "text/plain")])
+    return("Server is running.")
+
+
+def parse_query(data):
+    query = parse_qs(data)
+    filename, = query.get('filename')
+    exclude = query.get('exclude')
+    try:
+        exclude = [int(x) for x in exclude]
+    except ValueError:
+        exclude = ()
+    return(parse_rrd_file(filename, exclude=exclude, wsgi=True))
+
 
 def main(argv):
     input_filename = ''
