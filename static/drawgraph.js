@@ -127,9 +127,9 @@ function drawGraph(prefix, units, url) {
 }
 
 $(function(){
-    drawGraph("temp", "&deg;C", "/rrd/?filename=temperature.json");
-    drawGraph("hum", "%","/rrd/?filename=misc.json&exclude=1");
-    drawGraph("pre", " мм. рт. ст.","/rrd/?filename=pressure.json");
-    drawGraph("brg", " ХЗ","/rrd/?filename=brightness.json");
-    drawGraph("lightnings", " разр.","/rrd/?filename=lightnings.json");
+    drawGraph("temp", "&deg;C", "/rrd/?filename=temperature.rrd");
+    drawGraph("hum", "%","/rrd/?filename=misc.rrd&exclude=1");
+    drawGraph("pre", " мм. рт. ст.","/rrd/?filename=pressure.rrd");
+    drawGraph("brg", " ХЗ","/rrd/?filename=brightness.rrd");
+    drawGraph("lightnings", " разр.","/rrd/?filename=lightnings.rrd");
 });
