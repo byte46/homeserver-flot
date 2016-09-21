@@ -4,6 +4,10 @@ Homeserver stat output using plot.
 ##Installation
 - # sudo apt-get install npm
 - # sudo npm install -g bower
-- clone the current repository, cd into the project's directory.
+- клонировать репозиторий, перейти в каталог проекта.
 - # bower install
 - # ./debug.sh
+
+##Usage
+- # python rrd_parse.py -h ;-)
+- Список json-файлов см. в конце файла drawgraph.js
