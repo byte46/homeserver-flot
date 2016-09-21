@@ -10,4 +10,6 @@ Homeserver stat output using plot.
 
 ##Usage
 - # python rrd_parse.py -h ;-)
-- Список json-файлов см. в конце файла drawgraph.js
+- В качестве wsgi-сервера:
+ - python rrd_parse.py -d
+ - Отправлять запросы вида: http://localhost:8000/rrd/?filename=data.rrd&exclude=1&exclude=2
