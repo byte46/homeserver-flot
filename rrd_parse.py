@@ -4,6 +4,8 @@ import sys
 import getopt
 import json
 import subprocess
+
+RRDTOOL = "/usr/bin/rrdtool"
 TIMERANGE = "-48h"
 
 LABELS = {
@@ -23,9 +25,13 @@ LABELS = {
 
 def parse_rrd_file(input_filename, output_filename=None, exclude=None):
     data = []
-    cmd_s = 'export LC_NUMERIC="C.UTF-8";rrdtool fetch {filename} -s{timerange} AVERAGE'
+    cmd_s = 'LC_NUMERIC="C" {rrdtool} fetch {filename} -s{timerange} AVERAGE'
     poutput = subprocess.Popen(
-        cmd_s.format(filename=input_filename, timerange=TIMERANGE),
+        cmd_s.format(
+            rrdtool=RRDTOOL,
+            filename=input_filename,
+            timerange=TIMERANGE
+        ),
         shell=True,
         stdout=subprocess.PIPE
     )
@@ -34,7 +40,13 @@ def parse_rrd_file(input_filename, output_filename=None, exclude=None):
         if line.strip() and ':' not in line:
             z = [x for x in line.rstrip().split(' ') if x]
             for i in z:
-                data.append({'label': LABELS.get(i, (i,))[0], "color": LABELS.get(i, (0, "#909090"))[1], 'data': []})
+                data.append(
+                    {
+                        'label': LABELS.get(i, (i,))[0],
+                        "color": LABELS.get(i, (0, "#909090"))[1],
+                        'data': []
+                    }
+                )
         elif line.strip() and ':' in line:
             d = []
             time, rrd_data = line.rstrip().split(':')
@@ -43,7 +55,7 @@ def parse_rrd_file(input_filename, output_filename=None, exclude=None):
                 data[k]['data'].append([int(time) * 1000, i])
 
     pdata = []
-    for k,v in enumerate(data):
+    for k, v in enumerate(data):
         if k not in exclude:
             pdata.append(v)
     data = pdata
@@ -63,16 +75,20 @@ def main(argv):
     input_filename = ''
     output_filename = ''
     exclude = []
+    help_str = """
+rrd_parse.py -i <inputfile> -o <outputfile> -e <exclude list>\r\n
+Example:
+\trrd_parse.py -i data.rrd -o data.json -e 1,2\r\n"""
     try:
         if len(argv) == 0:
             raise getopt.GetoptError("Err")
         opts, args = getopt.getopt(argv, "hi:o:e:", ["ifile=", "ofile=", "exclude="])
     except getopt.GetoptError:
-        sys.stderr.write("main.py -i <inputfile> -o <outputfile> -e <exclude list>\r\n")
+        sys.stderr.write(help_str)
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            sys.stderr.write('main.py -i <inputfile> -o <outputfile> -e <exclude list>\r\n')
+            sys.stderr.write(help_str)
             sys.exit()
         elif opt in ("-i", "--ifile"):
             input_filename = arg
