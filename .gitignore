@@ -6,4 +6,5 @@ local/
 share/
 pip-selfcheck.json
 *.json
+!bower.json
 *.rrd

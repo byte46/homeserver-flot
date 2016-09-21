@@ -1,0 +1,21 @@
+{
+  "name": "homeserver-plot",
+  "authors": [
+    "Serge AKA Byte <byte.kgd@gmail.com>"
+  ],
+  "description": "Homeserver output using plot library",
+  "main": "",
+  "license": "MIT",
+  "homepage": "http://byteware.ru",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "flot.curvedlines": "curvedlines#^1.1.1"
+  }
+}
