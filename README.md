@@ -1,5 +1,5 @@
-# homeserver-plot
-Homeserver RRD data output using plot.
+# homeserver-flot
+Homeserver RRD data output using flot.
 
 ##Installation
 - # sudo apt-get install npm
