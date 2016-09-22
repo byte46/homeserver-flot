@@ -1,5 +1,5 @@
 # homeserver-plot
-Homeserver stat output using plot.
+Homeserver RRD data output using plot.
 
 ##Installation
 - # sudo apt-get install npm
